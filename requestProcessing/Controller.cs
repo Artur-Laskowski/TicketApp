@@ -34,6 +34,7 @@ namespace requestProcessing
                 names.Append(s.Name);
                 names.Append(";");
             }
+            names.Remove(names.Length - 1, 1);
 
             Console.WriteLine("Sending: " + names.ToString());
 
