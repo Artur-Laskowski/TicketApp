@@ -1,26 +1,35 @@
-﻿<p>Measure distance.</p>
+﻿<style>
+    #dist-start-end {
+        width: 300px;
+        border: 10px solid #444444;
+        padding: 25px;
+        margin: 25px;
+        float: left;
+    }
+</style>
 
-<p>Current count: <strong>{{ currentCount }}</strong></p>
+<p>Measure distance.</p>
 
-<button (click)="incrementCounter()">Increment</button>
+<div id="dist-start-end">
+    <select [(ngModel)]="selectedStartStation" *ngIf="stations">
+        <option *ngFor="let station of stations">
+            {{ station }}
+        </option>
+    </select>
+
+    <p>Selected start station: {{ selectedStartStation }}</p>
+</div>
+
+<div id="dist-start-end">
+    <select [(ngModel)]="selectedEndStation" *ngIf="stations">
+        <option *ngFor="let station of stations">
+            {{ station }}
+        </option>
+    </select>
+
+    <p>Selected end station: {{ selectedEndStation }}</p>
+</div>
 
 <button (click)="getDistance()">distance</button>
 
 <p>Distance: {{ distance }}</p>
-<p>Stations: {{ stations }}</p>
-
-<select [(ngModel)]="selectedStartStation" *ngIf="stations">
-    <option *ngFor="let station of stations">
-        {{ station }}
-    </option>
-</select>
-
-<p>Selected start station: {{ selectedStartStation }}</p>
-
-<select [(ngModel)]="selectedEndStation" *ngIf="stations">
-    <option *ngFor="let station of stations">
-        {{ station }}
-    </option>
-</select>
-
-<p>Selected end station: {{ selectedEndStation }}</p>
