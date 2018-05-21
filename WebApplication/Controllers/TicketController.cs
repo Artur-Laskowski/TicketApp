@@ -25,9 +25,10 @@ namespace WebApplication.Controllers
                 //server.ReceiveFrameString();
                 var message = server.ReceiveFrameBytes();
 
-                return message;
+                if (message.Length == 0)
+                    throw new Exception("empty response");
 
-                //Console.WriteLine($"response: {message}");
+                return message;
             }
         }
 
@@ -38,7 +39,15 @@ namespace WebApplication.Controllers
             string request = "GetDistance;";
             request += stationA + ";" + stationB;
 
-            byte[] response = Communicate(request);
+            byte[] response;
+            try
+            {
+                response = Communicate(request);
+            }
+            catch (Exception)
+            {
+                response = Encoding.ASCII.GetBytes("-1");
+            }
             double distance = BitConverter.ToDouble(response, 0);
 
             return (int)distance;
@@ -49,10 +58,20 @@ namespace WebApplication.Controllers
         {
             string request = "GetAllStationNames";
 
-            byte[] response = Communicate(request);
+            byte[] response;
+            try
+            {
+                response = Communicate(request);
+            }
+            catch (Exception)
+            {
+                response = Encoding.ASCII.GetBytes("ERROR");
+            }
 
             string stations = Encoding.ASCII.GetString(response);
             string[] stationNames = stations.Split(";");
+
+            Array.Sort(stationNames);
 
             return stationNames;
         }
