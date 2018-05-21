@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { DistanceComponent } from './components/distance/distance.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { DistanceComponent } from './components/distance/distance.component';
         CounterComponent,
         FetchDataComponent,
         DistanceComponent,
+        UserComponent,
         HomeComponent
     ],
     imports: [
@@ -30,6 +32,7 @@ import { DistanceComponent } from './components/distance/distance.component';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: 'distance', component: DistanceComponent },
+            { path: 'user', component: UserComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]
