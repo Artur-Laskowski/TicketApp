@@ -18,9 +18,6 @@ export class DistanceComponent {
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
         this.httpv = http;
         this.baseUrlv = baseUrl;
-        this.stations = [];
-        this.selectedStartStation = "none";
-        this.selectedEndStation = "none";
 
         this.httpv.get(this.baseUrlv + 'getAllStations').subscribe(result => {
             this.stations = result.json();

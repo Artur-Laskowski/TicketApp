@@ -1,16 +1,33 @@
 ﻿<style>
     #dist-start-end {
-        width: 300px;
+        width: 250px;
         border: 10px solid #444444;
-        padding: 25px;
-        margin: 25px;
-        float: left;
+        position: relative;
+        /*padding: 25px;*/
+        margin: auto;
+        text-align: center;
+        display: block;
+        overflow:hidden;
+    }
+    #dist-button {
+        /*width: 300px;
+        position: absolute;
+        top: 200px;
+        left: 300px;*/
+        width: 80%;
+        position: relative;
+        margin: auto;
+        text-align: center;
+        display: block;
     }
 </style>
 
-<p>Measure distance.</p>
+<p style="text-align: center;">Measure distance.</p>
 
-<div id="dist-start-end">
+<p *ngIf="!stations" style="text-align: center;">Loading...</p>
+
+<div id="dist-start-end" *ngIf="stations">
+    <br/>
     <select [(ngModel)]="selectedStartStation" *ngIf="stations">
         <option *ngFor="let station of stations">
             {{ station }}
@@ -19,9 +36,10 @@
 
     <p>Selected start station: {{ selectedStartStation }}</p>
 </div>
-
-<div id="dist-start-end">
-    <select [(ngModel)]="selectedEndStation" *ngIf="stations">
+<br/>
+<div id="dist-start-end" *ngIf="stations">
+    <br/>
+    <select [(ngModel)]="selectedEndStation">
         <option *ngFor="let station of stations">
             {{ station }}
         </option>
@@ -30,6 +48,9 @@
     <p>Selected end station: {{ selectedEndStation }}</p>
 </div>
 
-<button (click)="getDistance()">distance</button>
+<br />
+<div id="dist-button" *ngIf="stations">
+    <button (click)="getDistance()">calculate distance</button>
 
-<p>Distance: {{ distance }}</p>
+    <p>Distance: {{ distance }}</p>
+</div>
