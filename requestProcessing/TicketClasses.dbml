@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TicketsDatabase" Class="TicketClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\ProjectsV13;Initial Catalog=TicketsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="requestProcessing.Properties.Settings" SettingsPropertyName="TicketsDatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Station" Member="Stations">
+    <Type Name="Station">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="Lat" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Lng" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Ticket_Station" Member="Ticket" ThisKey="Id" OtherKey="StartId" Type="Ticket" IsForeignKey="true" />
+      <Association Name="Ticket_Station1" Member="Ticket1" ThisKey="Id" OtherKey="DestinationId" Type="Ticket" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ticket" Member="Tickets">
+    <Type Name="Ticket">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DestinationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Ticket_Station" Member="Stations" ThisKey="StartId" OtherKey="Id" Type="Station" />
+      <Association Name="Ticket_User" Member="Users" ThisKey="UserId" OtherKey="Id" Type="User" />
+      <Association Name="Ticket_Station1" Member="Stations1" ThisKey="DestinationId" OtherKey="Id" Type="Station" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Login" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.Data.Linq.Binary" DbType="Binary(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Ticket_User" Member="Ticket" ThisKey="Id" OtherKey="UserId" Type="Ticket" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

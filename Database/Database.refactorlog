@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="e603555b-b0cd-47bc-8e6f-20698a394d56" ChangeDateTime="05/18/2018 18:55:21">
+    <Property Name="ElementName" Value="[dbo].[Ticket].[Start]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ticket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StartId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="30f40dd0-371d-48b7-adf9-8cfa3bee4c6b" ChangeDateTime="05/18/2018 18:55:25">
+    <Property Name="ElementName" Value="[dbo].[Ticket].[Destination]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ticket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DestinationId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bc555a53-09ed-4441-b7d7-0d6798cce1a8" ChangeDateTime="05/18/2018 18:55:28">
+    <Property Name="ElementName" Value="[dbo].[Ticket].[User]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ticket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c287537e-99bc-4c9d-9ab7-15dfa78373d7" ChangeDateTime="05/18/2018 19:38:43">
+    <Property Name="ElementName" Value="[dbo].[Station].[CoordsX]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Station]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Lat" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="393d58e1-ed50-43c7-adaf-a10c83d7a0e0" ChangeDateTime="05/18/2018 19:38:45">
+    <Property Name="ElementName" Value="[dbo].[Station].[CoordsY]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Station]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Lng" />
+  </Operation>
+</Operations>

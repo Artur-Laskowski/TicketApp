@@ -1,0 +1,26 @@
+﻿<p>Measure distance.</p>
+
+<p>Current count: <strong>{{ currentCount }}</strong></p>
+
+<button (click)="incrementCounter()">Increment</button>
+
+<button (click)="getDistance()">distance</button>
+
+<p>Distance: {{ distance }}</p>
+<p>Stations: {{ stations }}</p>
+
+<select [(ngModel)]="selectedStartStation" *ngIf="stations">
+    <option *ngFor="let station of stations">
+        {{ station }}
+    </option>
+</select>
+
+<p>Selected start station: {{ selectedStartStation }}</p>
+
+<select [(ngModel)]="selectedEndStation" *ngIf="stations">
+    <option *ngFor="let station of stations">
+        {{ station }}
+    </option>
+</select>
+
+<p>Selected end station: {{ selectedEndStation }}</p>
