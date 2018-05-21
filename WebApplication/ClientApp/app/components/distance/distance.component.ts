@@ -24,6 +24,8 @@ export class DistanceComponent {
 
         this.httpv.get(this.baseUrlv + 'getAllStations').subscribe(result => {
             this.stations = result.json();
+            this.selectedStartStation = this.stations[0];
+            this.selectedEndStation = this.stations[0];
         }, error => console.error(error));
     }
 
