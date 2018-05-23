@@ -1,0 +1,70 @@
+﻿<style>
+    #ticket-start-end {
+        width: 250px;
+        border: 10px solid #444444;
+        position: relative;
+        margin: auto;
+        text-align: center;
+        display: block;
+        overflow: hidden;
+    }
+
+    #ticket-button {
+        width: 80%;
+        position: relative;
+        margin: auto;
+        text-align: center;
+        display: block;
+    }
+
+    #warning {
+        width: 80%;
+        position: relative;
+        margin: auto;
+        text-align: center;
+        display: block;
+        color: red;
+    }
+</style>
+
+<p style="text-align: center;">Buy a ticket.</p>
+
+<p *ngIf="!stations" style="text-align: center;">Loading...</p>
+
+<div *ngIf="stations">
+    <div id="ticket-start-end">
+        <br />
+        <select [(ngModel)]="selectedStartStation" *ngIf="stations">
+            <option *ngFor="let station of stations">
+                {{ station }}
+            </option>
+        </select>
+
+        <p>Selected start station: {{ selectedStartStation }}</p>
+    </div>
+    <br />
+    <div id="ticket-start-end" *ngIf="stations">
+        <br />
+        <select [(ngModel)]="selectedEndStation">
+            <option *ngFor="let station of stations">
+                {{ station }}
+            </option>
+        </select>
+
+        <p>Selected end station: {{ selectedEndStation }}</p>
+    </div>
+
+    <br />
+    <div id="ticket-button" *ngIf="loggedIn">
+        <button (click)="getDistance()">get price</button>
+
+        <p>Price: {{ price }}</p>
+
+        <br />
+        <button (click)="buyTicket()">buy ticket</button>
+    </div>
+
+    <em *ngIf="bought" id="warning" style="color: green">Ticket bought successfully!</em>
+    <em *ngIf="failure" id="warning">Failed to buy the ticket!</em>
+    <em *ngIf="!loggedIn" id="warning">You must login first!</em>
+</div>

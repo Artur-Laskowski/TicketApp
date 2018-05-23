@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,6 +57,31 @@ namespace requestProcessing {
             }
 
             return BitConverter.GetBytes(success);
+        }
+
+        static public byte[] BuyTicket(string[] vs) {
+            Model.AddTicket(vs[1], vs[2], vs[3]);
+
+            return BitConverter.GetBytes(true);
+        }
+
+        static public byte[] GetTicketsByUser(string[] vs) {
+            int userId = Model.GetUserByLogin(vs[1]);
+            Model.TicketData[] tickets = Model.GetTicketsByUser(userId);
+
+            foreach (var t in tickets) {
+                Station start = Model.GetStationFromString(t.StartStation);
+                Station end = Model.GetStationFromString(t.EndStation);
+
+                double distance = CalculateDistance(start, end);
+                t.Distance = (int)distance;
+            }
+            
+            IFormatter formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream()) {
+                formatter.Serialize(stream, tickets);
+                return stream.ToArray();
+            }
         }
     }
 }

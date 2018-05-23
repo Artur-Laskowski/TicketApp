@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -13,6 +16,7 @@ using NetMQ.Sockets;
 
 namespace WebApplication.Controllers {
     public class TicketController : Controller {
+
         private byte[] Communicate(string request) {
             using (var server = new RequestSocket()) {
                 server.Connect("tcp://localhost:5555");
@@ -39,6 +43,23 @@ namespace WebApplication.Controllers {
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string password { get; set; }
+        }
+
+        public class TicketPurchaseModel {
+            [Required]
+            [Display(Name = "Start station")]
+            public string stationA { get; set; }
+
+            [Required]
+            [Display(Name = "End station")]
+            public string stationB { get; set; }
+        }
+
+        [Serializable]
+        public class TicketData {
+            public string StartStation { get; set; }
+            public string EndStation { get; set; }
+            public int Distance { get; set; }
         }
 
         [HttpGet("[action]")]
@@ -155,7 +176,7 @@ namespace WebApplication.Controllers {
             try {
                 response = Communicate(request);
             } catch (Exception) {
-                response = response = BitConverter.GetBytes(-1);
+                response = BitConverter.GetBytes(-1);
             }
 
             return BitConverter.ToInt32(response, 0) == -1;
@@ -178,6 +199,50 @@ namespace WebApplication.Controllers {
             } catch (Exception) {
 
             }
+        }
+
+        [HttpPost("[action]")]
+        public bool buyTicket([FromBody]TicketPurchaseModel ticketPurchaseDetails) {
+            //HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
+            if (ticketPurchaseDetails.stationA == null || ticketPurchaseDetails.stationB == null)
+                return false;
+
+            if (HttpContext.Session.Get("currentUser") == null)
+                return false;
+
+            string request = "BuyTicket;";
+            request += Encoding.ASCII.GetString(HttpContext.Session.Get("currentUser")) + ";";
+            request += ticketPurchaseDetails.stationA + ";";
+            request += ticketPurchaseDetails.stationB;
+
+            byte[] response;
+            try {
+                response = Communicate(request);
+            } catch (Exception) {
+                response = BitConverter.GetBytes(false);
+            }
+
+            if (BitConverter.ToBoolean(response, 0)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<TicketData> getTicketsByUser(string username) {
+            string request = "GetTicketsByUser;";
+            request += username;
+
+            var response = Communicate(request);
+
+            TicketData[] tickets;
+            IFormatter formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream(response)) {
+                tickets = (TicketData[])formatter.Deserialize(stream);
+            }
+
+            return tickets;
         }
 
         // GET: Ticket

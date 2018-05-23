@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace requestProcessing {
     static class Model {
+
+        [Serializable]
+        public class TicketData {
+            public string StartStation { get; set; }
+            public string EndStation { get; set; }
+            public int Distance { get; set; }
+        }
+
         static public TicketClassesDataContext ticketClassesDataContext;
         static public Station GetStationFromString(string name) {
             var result = ticketClassesDataContext.ExecuteQuery<Station>(
@@ -19,6 +27,18 @@ namespace requestProcessing {
         static public Station[] GetAllStations() {
             var table = ticketClassesDataContext.GetTable<Station>();
             return table.ToArray();
+        }
+
+        static public string GetStationName(int id) {
+            var result = ticketClassesDataContext.ExecuteQuery<Station>(
+                @"SELECT Id, Name
+                FROM dbo.Station
+                WHERE Id = {0}", id
+            );
+
+            var array = result.ToArray();
+
+            return array[0].Name;
         }
 
         static public int GetUserByLogin(string name) {
@@ -56,6 +76,33 @@ namespace requestProcessing {
             } else {
                 return true;
             }
+        }
+
+        static public void AddTicket(string userName, string startStation, string endStation) {
+            var userId = GetUserByLogin(userName);
+            var stationA = GetStationFromString(startStation);
+            var stationB = GetStationFromString(endStation);
+
+            ticketClassesDataContext.Tickets.InsertOnSubmit(new Ticket { StartId = stationA.Id, DestinationId = stationB.Id, UserId = userId });
+            ticketClassesDataContext.SubmitChanges();
+        }
+
+        static public TicketData[] GetTicketsByUser(int userId) {
+            var result = ticketClassesDataContext.ExecuteQuery<Ticket>(
+                @"SELECT Id, StartId, DestinationId, UserId
+                FROM dbo.Ticket
+                WHERE UserId = {0}", userId
+             );
+
+            var temp = result.ToArray();
+
+            List<TicketData> tickets = new List<TicketData>();
+
+            foreach (var t in temp) {
+                tickets.Add(new TicketData { StartStation = GetStationName(t.StartId), EndStation = GetStationName(t.DestinationId)});
+            }
+
+            return tickets.ToArray();
         }
     }
 }

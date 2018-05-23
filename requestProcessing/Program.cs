@@ -38,6 +38,10 @@ namespace requestProcessing {
 
                 while (true) {
                     Console.WriteLine("waiting");
+                    string[] s = new string[2];
+                    s[0] = "1";
+                    s[1] = "user1";
+                    var aanswer = Controller.GetTicketsByUser(s);
 
                     var message = client.ReceiveFrameString();
                     string[] vs = message.Split(';');
@@ -59,6 +63,12 @@ namespace requestProcessing {
                             break;
                         case "Authenticate":
                             answer = Controller.Authenticate(vs);
+                            break;
+                        case "BuyTicket":
+                            answer = Controller.BuyTicket(vs);
+                            break;
+                        case "GetTicketsByUser":
+                            answer = Controller.GetTicketsByUser(vs);
                             break;
                     }
 

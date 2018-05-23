@@ -7,7 +7,6 @@ import { Http } from '@angular/http';
 })
 /** distance component*/
 export class DistanceComponent {
-    /** distance ctor */
     
     public stations: string[];
     public selectedStartStation: string;
@@ -31,7 +30,7 @@ export class DistanceComponent {
     
     public distance = 0;
 
-    public getDistance(username: string) {
+    public getDistance() {
         this.http.get(`${this.baseUrl}getDistance/?stationA=${this.selectedStartStation}&stationB=${this.selectedEndStation}` ).subscribe(result => {
             this.distance = result.json();
         }, error => console.error(error));
