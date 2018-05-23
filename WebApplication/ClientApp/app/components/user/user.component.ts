@@ -12,6 +12,8 @@ export class UserComponent {
     public username: string;
     public password: string;
 
+    public loggedUser = "guest";
+
     private loggedIn: boolean;
     private failedLogin: boolean;
     private registered: boolean;
@@ -19,27 +21,30 @@ export class UserComponent {
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
         this.failedLogin = false;
+        this.loggedIn = false;
 
-            this.loggedIn = false;
-        
+        this.http.get(`${this.baseUrl}isLoggedIn`).subscribe(result => {
+            this.loggedIn = result.text() == "true";
+        }, error => console.error(error));
+
+        this.http.get(`${this.baseUrl}getLoggedUsername`).subscribe(result => {
+            this.loggedUser = result.text();
+        }, error => console.error(error));
     }
 
     loginUser() {
         this.http.post(`${this.baseUrl}loginUser`, { username: this.username, password: this.password }).subscribe(result => {
-            console.log("qwer");
-            if (true) {
-                console.log(result);
-                //localStorage.setItem('currentUser', result.json());
+            if (result.json()) {
                 this.loggedIn = true;
+                this.loggedUser = this.username;
             }
-            /*else {
-                console.log("adsf2");
+            else {
                 this.failedLogin = true;
 
                 setTimeout(() => {
                     this.failedLogin = false;
                 }, 5000);
-            }*/
+            }
         }, error => console.error(error));
     }
 
@@ -63,7 +68,8 @@ export class UserComponent {
     }
 
     logout() {
-        //localStorage.removeItem('currentUser');
-        this.loggedIn = false;
+        this.http.post(this.baseUrl + 'logoutUser', {}).subscribe(result => {
+            this.loggedIn = false;
+        }, error => console.error(error));
     }
 }

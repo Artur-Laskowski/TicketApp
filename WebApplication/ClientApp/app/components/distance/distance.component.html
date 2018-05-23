@@ -3,22 +3,26 @@
         width: 250px;
         border: 10px solid #444444;
         position: relative;
-        /*padding: 25px;*/
         margin: auto;
         text-align: center;
         display: block;
         overflow:hidden;
     }
     #dist-button {
-        /*width: 300px;
-        position: absolute;
-        top: 200px;
-        left: 300px;*/
         width: 80%;
         position: relative;
         margin: auto;
         text-align: center;
         display: block;
+    }
+
+    #warning {
+        width: 80%;
+        position: relative;
+        margin: auto;
+        text-align: center;
+        display: block;
+        color: red;
     }
 </style>
 
@@ -26,31 +30,35 @@
 
 <p *ngIf="!stations" style="text-align: center;">Loading...</p>
 
-<div id="dist-start-end" *ngIf="stations">
-    <br/>
-    <select [(ngModel)]="selectedStartStation" *ngIf="stations">
-        <option *ngFor="let station of stations">
-            {{ station }}
-        </option>
-    </select>
+<div *ngIf="stations">
+    <div id="dist-start-end">
+        <br />
+        <select [(ngModel)]="selectedStartStation" *ngIf="stations">
+            <option *ngFor="let station of stations">
+                {{ station }}
+            </option>
+        </select>
 
-    <p>Selected start station: {{ selectedStartStation }}</p>
-</div>
-<br/>
-<div id="dist-start-end" *ngIf="stations">
-    <br/>
-    <select [(ngModel)]="selectedEndStation">
-        <option *ngFor="let station of stations">
-            {{ station }}
-        </option>
-    </select>
+        <p>Selected start station: {{ selectedStartStation }}</p>
+    </div>
+    <br />
+    <div id="dist-start-end" *ngIf="stations">
+        <br />
+        <select [(ngModel)]="selectedEndStation">
+            <option *ngFor="let station of stations">
+                {{ station }}
+            </option>
+        </select>
 
-    <p>Selected end station: {{ selectedEndStation }}</p>
-</div>
+        <p>Selected end station: {{ selectedEndStation }}</p>
+    </div>
 
-<br />
-<div id="dist-button" *ngIf="stations">
-    <button (click)="getDistance()">calculate distance</button>
+    <br />
+    <div id="dist-button" *ngIf="loggedIn">
+        <button (click)="getDistance()">calculate distance</button>
 
-    <p>Distance: {{ distance }}</p>
+        <p>Distance: {{ distance }}</p>
+    </div>
+
+    <em *ngIf="!loggedIn" id="warning">You must login first!</em>
 </div>

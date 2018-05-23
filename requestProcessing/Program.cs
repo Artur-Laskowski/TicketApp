@@ -57,6 +57,9 @@ namespace requestProcessing {
                         case "AddUser":
                             answer = Controller.AddUser(vs);
                             break;
+                        case "Authenticate":
+                            answer = Controller.Authenticate(vs);
+                            break;
                     }
 
                     Thread.Sleep(1000);

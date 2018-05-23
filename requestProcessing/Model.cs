@@ -41,5 +41,21 @@ namespace requestProcessing {
             ticketClassesDataContext.Users.InsertOnSubmit(new User { Login = login, Password = Convert.FromBase64String(password) });
             ticketClassesDataContext.SubmitChanges();
         }
+
+        static public bool Authenticate(string login, string password) {
+            var result = ticketClassesDataContext.ExecuteQuery<User>(
+                @"SELECT Id
+                FROM dbo.[User]
+                WHERE Login = {0} AND Password = {1}", login, Convert.FromBase64String(password)
+            );
+
+            var array = result.ToArray();
+
+            if (array.Length == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 }

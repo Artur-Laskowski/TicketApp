@@ -80,14 +80,65 @@ namespace WebApplication.Controllers {
         }
 
         [HttpPost("[action]")]
-        public string loginUser([FromBody]LogOnModel logOnModel) {
-            string user = Encoding.ASCII.GetString(HttpContext.Session.Get("currentUser"));
-            return user;
+        public bool loginUser([FromBody]LogOnModel logOnModel) {
+            byte[] userBytes = HttpContext.Session.Get("currentUser");
+
+            if (userBytes != null) {
+                string user = Encoding.ASCII.GetString(userBytes);
+
+                if (user.Equals(logOnModel.username))
+                    return true;
+            }
+
+            if (logOnModel.username == null || logOnModel.password == null)
+                return false;
+
+            string request = "Authenticate;";
+            request += logOnModel.username + ";";
+            request += GetBase64FromString(logOnModel.password);
+
+            byte[] response;
+            try {
+                response = Communicate(request);
+            } catch (Exception) {
+                response = response = BitConverter.GetBytes(false);
+            }
+
+            if (BitConverter.ToBoolean(response, 0)) {
+                HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        [HttpGet("[action]")]
+        public bool isLoggedIn() {
+            return HttpContext.Session.Get("currentUser") != null;
+        }
+
+        [HttpGet("[action]")]
+        public string getLoggedUsername() {
+            if (HttpContext.Session.Get("currentUser") != null) {
+                return Encoding.ASCII.GetString(HttpContext.Session.Get("currentUser"));
+            }
+
+            return "guest";
+        }
+
+        [HttpPost("[action]")]
+        public void logoutUser() {
+            HttpContext.Session.Remove("currentUser");
         }
 
         [HttpPost("[action]")]
         public bool registerUser([FromBody]LogOnModel logOnModel) {
             //HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
+            if (logOnModel.username == null || logOnModel.password == null)
+                return false;
+
             if (checkIfLoginAvailable(logOnModel.username)) {
                 addUser(logOnModel.username, logOnModel.password);
                 return true;
@@ -110,13 +161,17 @@ namespace WebApplication.Controllers {
             return BitConverter.ToInt32(response, 0) == -1;
         }
 
+        private string GetBase64FromString(string data) {
+            using (var sha1 = new SHA1CryptoServiceProvider()) {
+                var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(data));
+                return Convert.ToBase64String(sha1data);
+            }
+        }
+
         private void addUser(string username, string password) {
             string request = "AddUser;";
             request += username + ";";
-            var sha1 = new SHA1CryptoServiceProvider();
-            var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(password));
-
-            request += Convert.ToBase64String(sha1data);
+            request += GetBase64FromString(password);
 
             try {
                 Communicate(request);

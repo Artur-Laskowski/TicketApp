@@ -3,13 +3,14 @@
     Username: <input [(ngModel)]="username" />
     <br />
     <br />
-    Password: <input [(ngModel)]="password" />
+    Password: <input type="password" [(ngModel)]="password" />
     <br />
     <br />
     <button (click)="loginUser()">Login</button>
     <button (click)="registerUser()">Register</button>
 </div>
 <div *ngIf="loggedIn">
+    Logged in as {{loggedUser}}! <br />
     <button (click)="logout()">Logout</button>
 </div>
 <em *ngIf="failedLogin" style="color: red;">failed to log in</em>

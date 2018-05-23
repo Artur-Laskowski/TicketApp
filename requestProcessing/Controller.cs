@@ -43,5 +43,17 @@ namespace requestProcessing {
 
             return BitConverter.GetBytes(true);
         }
+
+        static public byte[] Authenticate(string[] vs) {
+            var userId = Model.GetUserByLogin(vs[1]);
+
+            bool success = false;
+
+            if (userId != -1) {
+                success = Model.Authenticate(vs[1], vs[2]);
+            }
+
+            return BitConverter.GetBytes(success);
+        }
     }
 }
