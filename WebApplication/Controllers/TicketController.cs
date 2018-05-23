@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,14 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using NetMQ;
 using NetMQ.Sockets;
 
-namespace WebApplication.Controllers
-{
-    public class TicketController : Controller
-    {
-        private byte[] Communicate(string request)
-        {
-            using (var server = new RequestSocket())
-            {
+namespace WebApplication.Controllers {
+    public class TicketController : Controller {
+        private byte[] Communicate(string request) {
+            using (var server = new RequestSocket()) {
                 server.Connect("tcp://localhost:5555");
 
                 Console.WriteLine($"Sending {request}");
@@ -32,21 +30,30 @@ namespace WebApplication.Controllers
             }
         }
 
+        public class LogOnModel {
+            [Required]
+            [Display(Name = "User name")]
+            public string username { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string password { get; set; }
+        }
 
         [HttpGet("[action]")]
-        public int getDistance(string stationA, string stationB)
-        {
+        public int getDistance(string stationA, string stationB) {
             string request = "GetDistance;";
             request += stationA + ";" + stationB;
 
             byte[] response;
-            try
-            {
+            try {
                 response = Communicate(request);
-            }
-            catch (Exception)
-            {
-                response = Encoding.ASCII.GetBytes("-1");
+                if (HttpContext.Session.Get("currentUser").Length == 0) {
+                    throw new Exception("Not logged in");
+                }
+            } catch (Exception) {
+                response = BitConverter.GetBytes(-1.0);
             }
             double distance = BitConverter.ToDouble(response, 0);
 
@@ -54,17 +61,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("[action]")]
-        public string[] getAllStations()
-        {
+        public string[] getAllStations() {
             string request = "GetAllStationNames";
 
             byte[] response;
-            try
-            {
+            try {
                 response = Communicate(request);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 response = Encoding.ASCII.GetBytes("ERROR");
             }
 
@@ -76,83 +79,112 @@ namespace WebApplication.Controllers
             return stationNames;
         }
 
+        [HttpPost("[action]")]
+        public string loginUser([FromBody]LogOnModel logOnModel) {
+            string user = Encoding.ASCII.GetString(HttpContext.Session.Get("currentUser"));
+            return user;
+        }
+
+        [HttpPost("[action]")]
+        public bool registerUser([FromBody]LogOnModel logOnModel) {
+            //HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
+            if (checkIfLoginAvailable(logOnModel.username)) {
+                addUser(logOnModel.username, logOnModel.password);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public bool checkIfLoginAvailable(string login) {
+            string request = "CheckIfLoginAvailable;";
+            request += login;
+
+            byte[] response;
+            try {
+                response = Communicate(request);
+            } catch (Exception) {
+                response = response = BitConverter.GetBytes(-1);
+            }
+
+            return BitConverter.ToInt32(response, 0) == -1;
+        }
+
+        private void addUser(string username, string password) {
+            string request = "AddUser;";
+            request += username + ";";
+            var sha1 = new SHA1CryptoServiceProvider();
+            var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(password));
+
+            request += Convert.ToBase64String(sha1data);
+
+            try {
+                Communicate(request);
+            } catch (Exception) {
+
+            }
+        }
+
         // GET: Ticket
-        public ActionResult Index()
-        {
+        public ActionResult Index() {
             return View();
         }
 
         // GET: Ticket/Details/5
-        public ActionResult Details(int id)
-        {
+        public ActionResult Details(int id) {
             return View();
         }
 
         // GET: Ticket/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             return View();
         }
 
         // POST: Ticket/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult Create(IFormCollection collection) {
+            try {
                 // TODO: Add insert logic here
 
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            } catch {
                 return View();
             }
         }
 
         // GET: Ticket/Edit/5
-        public ActionResult Edit(int id)
-        {
+        public ActionResult Edit(int id) {
             return View();
         }
 
         // POST: Ticket/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult Edit(int id, IFormCollection collection) {
+            try {
                 // TODO: Add update logic here
 
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            } catch {
                 return View();
             }
         }
 
         // GET: Ticket/Delete/5
-        public ActionResult Delete(int id)
-        {
+        public ActionResult Delete(int id) {
             return View();
         }
 
         // POST: Ticket/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
+        public ActionResult Delete(int id, IFormCollection collection) {
+            try {
                 // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            } catch {
                 return View();
             }
         }

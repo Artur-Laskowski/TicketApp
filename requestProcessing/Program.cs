@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using NetMQ.Sockets;
 using NetMQ;
+using System.Threading;
 
-namespace requestProcessing
-{
-    class Program
-    {
-        
+namespace requestProcessing {
+    class Program {
 
 
 
 
 
-        static void Main(string[] args)
-        {
+
+        static void Main(string[] args) {
             Model.ticketClassesDataContext = new TicketClassesDataContext();
 
             /*
@@ -35,12 +33,10 @@ namespace requestProcessing
             }
             */
 
-            using (var client = new ResponseSocket())
-            {
+            using (var client = new ResponseSocket()) {
                 client.Bind("tcp://*:5555");
 
-                while (true)
-                {
+                while (true) {
                     Console.WriteLine("waiting");
 
                     var message = client.ReceiveFrameString();
@@ -48,17 +44,26 @@ namespace requestProcessing
                     Console.WriteLine("Received {0}", message);
 
                     byte[] answer = { };
-                    switch (vs[0])
-                    {
+                    switch (vs[0]) {
                         case "GetDistance":
                             answer = Controller.GetDistance(vs);
                             break;
                         case "GetAllStationNames":
                             answer = Controller.GetAllStationNames(vs);
                             break;
+                        case "CheckIfLoginAvailable":
+                            answer = Controller.GetUserByLogin(vs);
+                            break;
+                        case "AddUser":
+                            answer = Controller.AddUser(vs);
+                            break;
                     }
 
+                    Thread.Sleep(1000);
                     //Send an answer
+
+                    Console.WriteLine("Sending: " + Encoding.ASCII.GetString(answer));
+
                     client.SendFrame(answer);
 
                 }

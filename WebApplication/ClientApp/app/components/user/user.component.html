@@ -1,9 +1,17 @@
-﻿<br/>
-Username: <input />
-<br/>
-<br/>
-Password: <input />
-<br/>
-<br/>
-<button>Login</button>
-<button>Register</button>
+﻿<br />
+<div *ngIf="!loggedIn">
+    Username: <input [(ngModel)]="username" />
+    <br />
+    <br />
+    Password: <input [(ngModel)]="password" />
+    <br />
+    <br />
+    <button (click)="loginUser()">Login</button>
+    <button (click)="registerUser()">Register</button>
+</div>
+<div *ngIf="loggedIn">
+    <button (click)="logout()">Logout</button>
+</div>
+<em *ngIf="failedLogin" style="color: red;">failed to log in</em>
+<em *ngIf="registered" style="color: green;">registered successfully</em>
+<em *ngIf="failedRegister" style="color: red;">failed to register</em>
