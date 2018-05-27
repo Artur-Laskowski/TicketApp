@@ -38,10 +38,10 @@ namespace requestProcessing {
 
                 while (true) {
                     Console.WriteLine("waiting");
-                    string[] s = new string[2];
-                    s[0] = "1";
-                    s[1] = "user1";
-                    var aanswer = Controller.GetTicketsByUser(s);
+                    //string[] s = new string[2];
+                    //s[0] = "1";
+                    //s[1] = "user1";
+                    //var aanswer = Controller.GetTicketsByUser(s);
 
                     var message = client.ReceiveFrameString();
                     string[] vs = message.Split(';');
@@ -75,7 +75,7 @@ namespace requestProcessing {
                     Thread.Sleep(1000);
                     //Send an answer
 
-                    Console.WriteLine("Sending: " + Encoding.ASCII.GetString(answer));
+                    //Console.WriteLine("Sending: " + Encoding.ASCII.GetString(answer));
 
                     client.SendFrame(answer);
 

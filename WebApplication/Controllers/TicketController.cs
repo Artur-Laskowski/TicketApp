@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetMQ;
 using NetMQ.Sockets;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WebApplication.Controllers {
     public class TicketController : Controller {
@@ -53,13 +54,6 @@ namespace WebApplication.Controllers {
             [Required]
             [Display(Name = "End station")]
             public string stationB { get; set; }
-        }
-
-        [Serializable]
-        public class TicketData {
-            public string StartStation { get; set; }
-            public string EndStation { get; set; }
-            public int Distance { get; set; }
         }
 
         [HttpGet("[action]")]
@@ -230,16 +224,20 @@ namespace WebApplication.Controllers {
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<TicketData> getTicketsByUser(string username) {
+        public IEnumerable<requestProcessing.Model.TicketData> getTicketsByUser(string username) {
+
+            if (getLoggedUsername() != username)
+                return null;
+
             string request = "GetTicketsByUser;";
             request += username;
 
             var response = Communicate(request);
 
-            TicketData[] tickets;
+            requestProcessing.Model.TicketData[] tickets;
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream(response)) {
-                tickets = (TicketData[])formatter.Deserialize(stream);
+                tickets = (requestProcessing.Model.TicketData[])formatter.Deserialize(stream);
             }
 
             return tickets;

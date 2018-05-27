@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace requestProcessing {
-    static class Model {
+    public static class Model {
 
         [Serializable]
         public class TicketData {

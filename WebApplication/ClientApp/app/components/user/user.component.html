@@ -1,4 +1,20 @@
-﻿<br />
+﻿
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+
+    th {
+        text-align: left;
+    }
+</style>
+
+<br />
 <div *ngIf="!loggedIn">
     Username: <input [(ngModel)]="username" />
     <br />
@@ -16,3 +32,25 @@
 <em *ngIf="failedLogin" style="color: red;">failed to log in</em>
 <em *ngIf="registered" style="color: green;">registered successfully</em>
 <em *ngIf="failedRegister" style="color: red;">failed to register</em>
+
+<div *ngIf="receivedTickets">
+    <br />
+    purchased tickets:
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>Koniec</th>
+                <th>Cena</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ticket of tickets">
+                <td>{{ ticket.startStation }}</td>
+                <td>{{ ticket.endStation }}</td>
+                <td>{{ ticket.distance }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

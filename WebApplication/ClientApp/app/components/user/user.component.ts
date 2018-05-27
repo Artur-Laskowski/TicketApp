@@ -19,16 +19,29 @@ export class UserComponent {
     private registered: boolean;
     private failedRegister: boolean;
 
+    public receivedTickets = false;
+    public tickets: Ticket[];
+
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
         this.failedLogin = false;
         this.loggedIn = false;
 
         this.http.get(`${this.baseUrl}isLoggedIn`).subscribe(result => {
             this.loggedIn = result.text() == "true";
-        }, error => console.error(error));
 
-        this.http.get(`${this.baseUrl}getLoggedUsername`).subscribe(result => {
-            this.loggedUser = result.text();
+            if (!this.loggedIn) return;
+
+            this.http.get(`${this.baseUrl}getLoggedUsername`).subscribe(result => {
+                this.loggedUser = result.text();
+
+                if (this.loggedUser == "guest") return;
+
+                this.http.get(`${this.baseUrl}getTicketsByUser/?username=${this.loggedUser}`).subscribe(result => {
+                    this.tickets = result.json() as Ticket[];
+                    this.receivedTickets = true;
+                }, error => console.error(error));
+            }, error => console.error(error));
+
         }, error => console.error(error));
     }
 
@@ -37,6 +50,11 @@ export class UserComponent {
             if (result.json()) {
                 this.loggedIn = true;
                 this.loggedUser = this.username;
+
+                this.http.get(`${this.baseUrl}getTicketsByUser/?username=${this.loggedUser}`).subscribe(result => {
+                    this.tickets = result.json() as Ticket[];
+                    this.receivedTickets = true;
+                }, error => console.error(error));
             }
             else {
                 this.failedLogin = true;
@@ -72,4 +90,10 @@ export class UserComponent {
             this.loggedIn = false;
         }, error => console.error(error));
     }
+}
+
+interface Ticket {
+    distance: number;
+    startStation: string;
+    endStation: string;
 }
