@@ -124,6 +124,11 @@
         "tsickle": "0.21.6"
       }
     },
+    "@aspnet/signalr": {
+      "version": "1.0.0-rc1-update1",
+      "resolved": "https://registry.npmjs.org/@aspnet/signalr/-/signalr-1.0.0-rc1-update1.tgz",
+      "integrity": "sha512-6GBJTho/CZfv1ZHninq7ckBGhm6DPK5wGuzc5IZq6v1Rj6Ua9htvVAVXxAbTaIHzu+iEXJI+Ms4EP8DVcGeQYg=="
+    },
     "@ngtools/webpack": {
       "version": "1.5.0",
       "resolved": "https://registry.npmjs.org/@ngtools/webpack/-/webpack-1.5.0.tgz",
@@ -149,19 +154,6 @@
         }
       }
     },
-    "@types/angular": {
-      "version": "1.6.45",
-      "resolved": "https://registry.npmjs.org/@types/angular/-/angular-1.6.45.tgz",
-      "integrity": "sha512-eXm3F/z2j8lVq7yBLL2G8QAygzYAboIJbJ46g26t71hgPtlxV9ibEJIBNj4KxCIZf7DcQo/KSnqaQ/0D9Rx2GA=="
-    },
-    "@types/angular-local-storage": {
-      "version": "0.6.0",
-      "resolved": "https://registry.npmjs.org/@types/angular-local-storage/-/angular-local-storage-0.6.0.tgz",
-      "integrity": "sha512-yW8BoEGraQI2OM35gRBgUgqIOMCMU39GsiRq5968nBf4hoeErt3XemuV/csrtOm1AsoPcMZlbtn9J/1N8AiZpA==",
-      "requires": {
-        "@types/angular": "1.6.45"
-      }
-    },
     "@types/chai": {
       "version": "4.0.1",
       "resolved": "https://registry.npmjs.org/@types/chai/-/chai-4.0.1.tgz",
@@ -173,6 +165,19 @@
       "resolved": "https://registry.npmjs.org/@types/jasmine/-/jasmine-2.5.53.tgz",
       "integrity": "sha1-TgzvrQnfXsSMjdQEM1EvhLFWjWE=",
       "dev": true
+    },
+    "@types/jquery": {
+      "version": "3.3.2",
+      "resolved": "https://registry.npmjs.org/@types/jquery/-/jquery-3.3.2.tgz",
+      "integrity": "sha1-hwAia93iS2+Y46YBJtuqs7Kjq0E="
+    },
+    "@types/signalr": {
+      "version": "2.2.35",
+      "resolved": "https://registry.npmjs.org/@types/signalr/-/signalr-2.2.35.tgz",
+      "integrity": "sha512-YVIqZzmiNA8E1maMM57fqz44xJFTWxoNeuw3NfYv/j22lVhVXZeef1rOFo96ENpnrpEa+5ktKpDsGpozfKdTCw==",
+      "requires": {
+        "@types/jquery": "3.3.2"
+      }
     },
     "@types/webpack-env": {
       "version": "1.13.0",
@@ -2267,7 +2272,7 @@
     "fsevents": {
       "version": "1.2.4",
       "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-1.2.4.tgz",
-      "integrity": "sha512-z8H8/diyk76B7q5wg+Ud0+CqzcAF3mBBI/bA5ne5zrRUUIvNkJY//D3BqyH571KuAC4Nr7Rw7CjWX4r0y9DvNg==",
+      "integrity": "sha1-9B3LGvJYKvNpLaNvxVy9jhBBxCY=",
       "dev": true,
       "optional": true,
       "requires": {
@@ -3930,7 +3935,7 @@
     "nan": {
       "version": "2.10.0",
       "resolved": "https://registry.npmjs.org/nan/-/nan-2.10.0.tgz",
-      "integrity": "sha512-bAdJv7fBLhWC+/Bls0Oza+mvTaNQtP+1RyhhhvD95pgUJz6XM5IzgmxOkItJ9tkoCiplvAnXI1tNmmUD/eScyA==",
+      "integrity": "sha1-ltDNYQ69WNS03pzAxoKM2pnHVI8=",
       "dev": true,
       "optional": true
     },

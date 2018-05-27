@@ -54,3 +54,26 @@
         </tbody>
     </table>
 </div>
+
+
+<div *ngIf="receivedTickets">
+    <br />
+    purchased tickets:
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>Koniec</th>
+                <th>Cena</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ticket of ticketsAsync">
+                <td>{{ ticket.startStation }}</td>
+                <td>{{ ticket.endStation }}</td>
+                <td>{{ ticket.distance }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

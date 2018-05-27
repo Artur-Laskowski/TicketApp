@@ -1,5 +1,8 @@
 ﻿import { Component, Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import * as $ from 'jquery';
+import * as signalR from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 
 @Component({
     selector: 'app-user',
@@ -21,10 +24,21 @@ export class UserComponent {
 
     public receivedTickets = false;
     public tickets: Ticket[];
+    public ticketsAsync: Ticket[];
+    public connection: HubConnection;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
         this.failedLogin = false;
         this.loggedIn = false;
+
+        this.connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/TicketHub")
+            .build();
+
+        this.connection.on("SendTickets", data => {
+            console.log(data);
+            this.ticketsAsync = data as Ticket[];
+        });
 
         this.http.get(`${this.baseUrl}isLoggedIn`).subscribe(result => {
             this.loggedIn = result.text() == "true";
@@ -40,6 +54,10 @@ export class UserComponent {
                     this.tickets = result.json() as Ticket[];
                     this.receivedTickets = true;
                 }, error => console.error(error));
+                
+                this.connection.start()
+                    .then(() => this.connection.invoke("RequestTickets", this.loggedUser));
+
             }, error => console.error(error));
 
         }, error => console.error(error));
@@ -47,9 +65,12 @@ export class UserComponent {
 
     loginUser() {
         this.http.post(`${this.baseUrl}loginUser`, { username: this.username, password: this.password }).subscribe(result => {
-            if (result.json()) {
+            if (result.text() == "true") {
                 this.loggedIn = true;
                 this.loggedUser = this.username;
+                
+                this.connection.start()
+                    .then(() => this.connection.invoke("RequestTickets", this.loggedUser));
 
                 this.http.get(`${this.baseUrl}getTicketsByUser/?username=${this.loggedUser}`).subscribe(result => {
                     this.tickets = result.json() as Ticket[];
@@ -68,7 +89,7 @@ export class UserComponent {
 
     registerUser() {
         this.http.post(this.baseUrl + 'registerUser', { username: this.username, password: this.password }).subscribe(result => {
-            if (result.json()) {
+            if (result.text() == "true") {
                 this.registered = true;
 
                 setTimeout(() => {

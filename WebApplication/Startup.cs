@@ -25,9 +25,11 @@ namespace WebApplication {
 
             services.AddSession(options => {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
                 options.Cookie.HttpOnly = true;
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +46,11 @@ namespace WebApplication {
             app.UseStaticFiles();
             app.UseSession();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<Hubs.TicketHub>("/hubs/TicketHub");
+            });
+
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
@@ -53,6 +60,8 @@ namespace WebApplication {
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
+
         }
     }
 }

@@ -18,7 +18,11 @@ using Microsoft.AspNetCore.SignalR;
 namespace WebApplication.Controllers {
     public class TicketController : Controller {
 
-        private byte[] Communicate(string request) {
+        //public TicketController(IConnectionManager signalRConnectionManager) {
+        //    var _hub = signalRConnectionManager.GetHubContext<T>();
+        //}
+
+        static public byte[] Communicate(string request) {
             using (var server = new RequestSocket()) {
                 server.Connect("tcp://localhost:5555");
 
