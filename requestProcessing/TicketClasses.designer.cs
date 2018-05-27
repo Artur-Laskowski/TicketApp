@@ -110,10 +110,6 @@ namespace requestProcessing
 		
 		private double _Lng;
 		
-		private EntityRef<Ticket> _Ticket;
-		
-		private EntityRef<Ticket> _Ticket1;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -130,8 +126,6 @@ namespace requestProcessing
 		
 		public Station()
 		{
-			this._Ticket = default(EntityRef<Ticket>);
-			this._Ticket1 = default(EntityRef<Ticket>);
 			OnCreated();
 		}
 		
@@ -146,10 +140,6 @@ namespace requestProcessing
 			{
 				if ((this._Id != value))
 				{
-					if ((this._Ticket.HasLoadedOrAssignedValue || this._Ticket1.HasLoadedOrAssignedValue))
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnIdChanging(value);
 					this.SendPropertyChanging();
 					this._Id = value;
@@ -219,74 +209,6 @@ namespace requestProcessing
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_Station", Storage="_Ticket", ThisKey="Id", OtherKey="StartId", IsForeignKey=true)]
-		public Ticket Ticket
-		{
-			get
-			{
-				return this._Ticket.Entity;
-			}
-			set
-			{
-				Ticket previousValue = this._Ticket.Entity;
-				if (((previousValue != value) 
-							|| (this._Ticket.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Ticket.Entity = null;
-						previousValue.Stations.Remove(this);
-					}
-					this._Ticket.Entity = value;
-					if ((value != null))
-					{
-						value.Stations.Add(this);
-						this._Id = value.StartId;
-					}
-					else
-					{
-						this._Id = default(int);
-					}
-					this.SendPropertyChanged("Ticket");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_Station1", Storage="_Ticket1", ThisKey="Id", OtherKey="DestinationId", IsForeignKey=true)]
-		public Ticket Ticket1
-		{
-			get
-			{
-				return this._Ticket1.Entity;
-			}
-			set
-			{
-				Ticket previousValue = this._Ticket1.Entity;
-				if (((previousValue != value) 
-							|| (this._Ticket1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Ticket1.Entity = null;
-						previousValue.Stations1.Remove(this);
-					}
-					this._Ticket1.Entity = value;
-					if ((value != null))
-					{
-						value.Stations1.Add(this);
-						this._Id = value.DestinationId;
-					}
-					else
-					{
-						this._Id = default(int);
-					}
-					this.SendPropertyChanged("Ticket1");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -322,12 +244,6 @@ namespace requestProcessing
 		
 		private int _DestinationId;
 		
-		private EntitySet<Station> _Stations;
-		
-		private EntitySet<User> _Users;
-		
-		private EntitySet<Station> _Stations1;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -344,9 +260,6 @@ namespace requestProcessing
 		
 		public Ticket()
 		{
-			this._Stations = new EntitySet<Station>(new Action<Station>(this.attach_Stations), new Action<Station>(this.detach_Stations));
-			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
-			this._Stations1 = new EntitySet<Station>(new Action<Station>(this.attach_Stations1), new Action<Station>(this.detach_Stations1));
 			OnCreated();
 		}
 		
@@ -430,45 +343,6 @@ namespace requestProcessing
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_Station", Storage="_Stations", ThisKey="StartId", OtherKey="Id")]
-		public EntitySet<Station> Stations
-		{
-			get
-			{
-				return this._Stations;
-			}
-			set
-			{
-				this._Stations.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_User", Storage="_Users", ThisKey="UserId", OtherKey="Id")]
-		public EntitySet<User> Users
-		{
-			get
-			{
-				return this._Users;
-			}
-			set
-			{
-				this._Users.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_Station1", Storage="_Stations1", ThisKey="DestinationId", OtherKey="Id")]
-		public EntitySet<Station> Stations1
-		{
-			get
-			{
-				return this._Stations1;
-			}
-			set
-			{
-				this._Stations1.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -488,42 +362,6 @@ namespace requestProcessing
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_Stations(Station entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket = this;
-		}
-		
-		private void detach_Stations(Station entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket = null;
-		}
-		
-		private void attach_Users(User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket = this;
-		}
-		
-		private void detach_Users(User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket = null;
-		}
-		
-		private void attach_Stations1(Station entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket1 = this;
-		}
-		
-		private void detach_Stations1(Station entity)
-		{
-			this.SendPropertyChanging();
-			entity.Ticket1 = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
@@ -537,8 +375,6 @@ namespace requestProcessing
 		private string _Login;
 		
 		private System.Data.Linq.Binary _Password;
-		
-		private EntityRef<Ticket> _Ticket;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -554,7 +390,6 @@ namespace requestProcessing
 		
 		public User()
 		{
-			this._Ticket = default(EntityRef<Ticket>);
 			OnCreated();
 		}
 		
@@ -569,10 +404,6 @@ namespace requestProcessing
 			{
 				if ((this._Id != value))
 				{
-					if (this._Ticket.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnIdChanging(value);
 					this.SendPropertyChanging();
 					this._Id = value;
@@ -618,40 +449,6 @@ namespace requestProcessing
 					this._Password = value;
 					this.SendPropertyChanged("Password");
 					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ticket_User", Storage="_Ticket", ThisKey="Id", OtherKey="UserId", IsForeignKey=true)]
-		public Ticket Ticket
-		{
-			get
-			{
-				return this._Ticket.Entity;
-			}
-			set
-			{
-				Ticket previousValue = this._Ticket.Entity;
-				if (((previousValue != value) 
-							|| (this._Ticket.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Ticket.Entity = null;
-						previousValue.Users.Remove(this);
-					}
-					this._Ticket.Entity = value;
-					if ((value != null))
-					{
-						value.Users.Add(this);
-						this._Id = value.UserId;
-					}
-					else
-					{
-						this._Id = default(int);
-					}
-					this.SendPropertyChanged("Ticket");
 				}
 			}
 		}

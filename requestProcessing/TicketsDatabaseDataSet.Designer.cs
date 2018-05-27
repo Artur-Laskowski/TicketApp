@@ -30,12 +30,6 @@ namespace requestProcessing {
         
         private UserDataTable tableUser;
         
-        private global::System.Data.DataRelation relationFK_Ticket_Station1;
-        
-        private global::System.Data.DataRelation relationFK_Ticket_Station;
-        
-        private global::System.Data.DataRelation relationFK_Ticket_User;
-        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -248,9 +242,6 @@ namespace requestProcessing {
                     this.tableUser.InitVars();
                 }
             }
-            this.relationFK_Ticket_Station1 = this.Relations["FK_Ticket_Station1"];
-            this.relationFK_Ticket_Station = this.Relations["FK_Ticket_Station"];
-            this.relationFK_Ticket_User = this.Relations["FK_Ticket_User"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -267,40 +258,6 @@ namespace requestProcessing {
             base.Tables.Add(this.tableTicket);
             this.tableUser = new UserDataTable();
             base.Tables.Add(this.tableUser);
-            global::System.Data.ForeignKeyConstraint fkc;
-            fkc = new global::System.Data.ForeignKeyConstraint("FK_Ticket_Station1", new global::System.Data.DataColumn[] {
-                        this.tableTicket.DestinationIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableStation.IdColumn});
-            this.tableStation.Constraints.Add(fkc);
-            fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
-            fkc.DeleteRule = global::System.Data.Rule.Cascade;
-            fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            fkc = new global::System.Data.ForeignKeyConstraint("FK_Ticket_Station", new global::System.Data.DataColumn[] {
-                        this.tableTicket.StartIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableStation.IdColumn});
-            this.tableStation.Constraints.Add(fkc);
-            fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
-            fkc.DeleteRule = global::System.Data.Rule.Cascade;
-            fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            fkc = new global::System.Data.ForeignKeyConstraint("FK_Ticket_User", new global::System.Data.DataColumn[] {
-                        this.tableTicket.UserIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableUser.IdColumn});
-            this.tableUser.Constraints.Add(fkc);
-            fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
-            fkc.DeleteRule = global::System.Data.Rule.Cascade;
-            fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            this.relationFK_Ticket_Station1 = new global::System.Data.DataRelation("FK_Ticket_Station1", new global::System.Data.DataColumn[] {
-                        this.tableTicket.DestinationIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableStation.IdColumn}, false);
-            this.Relations.Add(this.relationFK_Ticket_Station1);
-            this.relationFK_Ticket_Station = new global::System.Data.DataRelation("FK_Ticket_Station", new global::System.Data.DataColumn[] {
-                        this.tableTicket.StartIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableStation.IdColumn}, false);
-            this.Relations.Add(this.relationFK_Ticket_Station);
-            this.relationFK_Ticket_User = new global::System.Data.DataRelation("FK_Ticket_User", new global::System.Data.DataColumn[] {
-                        this.tableTicket.UserIdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableUser.IdColumn}, false);
-            this.Relations.Add(this.relationFK_Ticket_User);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1359,28 +1316,6 @@ namespace requestProcessing {
                     this[this.tableStation.LngColumn] = value;
                 }
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public TicketRow TicketRowByFK_Ticket_Station1 {
-                get {
-                    return ((TicketRow)(this.GetParentRow(this.Table.ParentRelations["FK_Ticket_Station1"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["FK_Ticket_Station1"]);
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public TicketRow TicketRowByFK_Ticket_Station {
-                get {
-                    return ((TicketRow)(this.GetParentRow(this.Table.ParentRelations["FK_Ticket_Station"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["FK_Ticket_Station"]);
-                }
-            }
         }
         
         /// <summary>
@@ -1440,39 +1375,6 @@ namespace requestProcessing {
                     this[this.tableTicket.DestinationIdColumn] = value;
                 }
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public UserRow[] GetUserRows() {
-                if ((this.Table.ChildRelations["FK_Ticket_User"] == null)) {
-                    return new UserRow[0];
-                }
-                else {
-                    return ((UserRow[])(base.GetChildRows(this.Table.ChildRelations["FK_Ticket_User"])));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public StationRow[] GetStationRowsByFK_Ticket_Station1() {
-                if ((this.Table.ChildRelations["FK_Ticket_Station1"] == null)) {
-                    return new StationRow[0];
-                }
-                else {
-                    return ((StationRow[])(base.GetChildRows(this.Table.ChildRelations["FK_Ticket_Station1"])));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public StationRow[] GetStationRowsByFK_Ticket_Station() {
-                if ((this.Table.ChildRelations["FK_Ticket_Station"] == null)) {
-                    return new StationRow[0];
-                }
-                else {
-                    return ((StationRow[])(base.GetChildRows(this.Table.ChildRelations["FK_Ticket_Station"])));
-                }
-            }
         }
         
         /// <summary>
@@ -1519,17 +1421,6 @@ namespace requestProcessing {
                 }
                 set {
                     this[this.tableUser.PasswordColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public TicketRow TicketRow {
-                get {
-                    return ((TicketRow)(this.GetParentRow(this.Table.ParentRelations["FK_Ticket_User"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["FK_Ticket_User"]);
                 }
             }
         }
@@ -2780,21 +2671,21 @@ SELECT Id, UserId, StartId, DestinationId FROM Ticket WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private int UpdateUpdatedRows(TicketsDatabaseDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._ticketTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.Ticket.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
-                updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
-                if (((updatedRows != null) 
-                            && (0 < updatedRows.Length))) {
-                    result = (result + this._ticketTableAdapter.Update(updatedRows));
-                    allChangedRows.AddRange(updatedRows);
-                }
-            }
             if ((this._stationTableAdapter != null)) {
                 global::System.Data.DataRow[] updatedRows = dataSet.Station.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
                     result = (result + this._stationTableAdapter.Update(updatedRows));
+                    allChangedRows.AddRange(updatedRows);
+                }
+            }
+            if ((this._ticketTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.Ticket.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+                updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
+                if (((updatedRows != null) 
+                            && (0 < updatedRows.Length))) {
+                    result = (result + this._ticketTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -2817,19 +2708,19 @@ SELECT Id, UserId, StartId, DestinationId FROM Ticket WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private int UpdateInsertedRows(TicketsDatabaseDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._ticketTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.Ticket.Select(null, null, global::System.Data.DataViewRowState.Added);
-                if (((addedRows != null) 
-                            && (0 < addedRows.Length))) {
-                    result = (result + this._ticketTableAdapter.Update(addedRows));
-                    allAddedRows.AddRange(addedRows);
-                }
-            }
             if ((this._stationTableAdapter != null)) {
                 global::System.Data.DataRow[] addedRows = dataSet.Station.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
                     result = (result + this._stationTableAdapter.Update(addedRows));
+                    allAddedRows.AddRange(addedRows);
+                }
+            }
+            if ((this._ticketTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.Ticket.Select(null, null, global::System.Data.DataViewRowState.Added);
+                if (((addedRows != null) 
+                            && (0 < addedRows.Length))) {
+                    result = (result + this._ticketTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -2859,19 +2750,19 @@ SELECT Id, UserId, StartId, DestinationId FROM Ticket WHERE (Id = @Id)";
                     allChangedRows.AddRange(deletedRows);
                 }
             }
-            if ((this._stationTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.Station.Select(null, null, global::System.Data.DataViewRowState.Deleted);
-                if (((deletedRows != null) 
-                            && (0 < deletedRows.Length))) {
-                    result = (result + this._stationTableAdapter.Update(deletedRows));
-                    allChangedRows.AddRange(deletedRows);
-                }
-            }
             if ((this._ticketTableAdapter != null)) {
                 global::System.Data.DataRow[] deletedRows = dataSet.Ticket.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
                     result = (result + this._ticketTableAdapter.Update(deletedRows));
+                    allChangedRows.AddRange(deletedRows);
+                }
+            }
+            if ((this._stationTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.Station.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+                if (((deletedRows != null) 
+                            && (0 < deletedRows.Length))) {
+                    result = (result + this._stationTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
