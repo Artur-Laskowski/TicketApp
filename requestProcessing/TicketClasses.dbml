@@ -4,8 +4,8 @@
     <Type Name="Station">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="Lat" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
-      <Column Name="Lng" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Lat" Type="System.Single" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Lng" Type="System.Single" DbType="Float NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Ticket" Member="Tickets">

@@ -106,9 +106,9 @@ namespace requestProcessing
 		
 		private string _Name;
 		
-		private double _Lat;
+		private float _Lat;
 		
-		private double _Lng;
+		private float _Lng;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -118,9 +118,9 @@ namespace requestProcessing
     partial void OnIdChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
-    partial void OnLatChanging(double value);
+    partial void OnLatChanging(float value);
     partial void OnLatChanged();
-    partial void OnLngChanging(double value);
+    partial void OnLngChanging(float value);
     partial void OnLngChanged();
     #endregion
 		
@@ -170,7 +170,7 @@ namespace requestProcessing
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lat", DbType="Float NOT NULL")]
-		public double Lat
+		public float Lat
 		{
 			get
 			{
@@ -190,7 +190,7 @@ namespace requestProcessing
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lng", DbType="Float NOT NULL")]
-		public double Lng
+		public float Lng
 		{
 			get
 			{

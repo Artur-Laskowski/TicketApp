@@ -33,8 +33,10 @@ namespace requestProcessing {
             }
             */
 
-            using (var client = new ResponseSocket()) {
-                client.Bind("tcp://*:5555");
+            //using (var client = new /*SubscriberSocket()*/ResponseSocket()) {
+            //client.Bind("tcp://*:5555");
+            using (var receiver = new PullSocket(">tcp://localhost:5557"))
+            using (var sender = new PushSocket(">tcp://localhost:5558")) {
 
                 while (true) {
                     Console.WriteLine("waiting");
@@ -43,7 +45,7 @@ namespace requestProcessing {
                     //s[1] = "user1";
                     //var aanswer = Controller.GetTicketsByUser(s);
 
-                    var message = client.ReceiveFrameString();
+                    var message = receiver.ReceiveFrameString();
                     string[] vs = message.Split(';');
                     Console.WriteLine("Received {0}", message);
 
@@ -77,7 +79,7 @@ namespace requestProcessing {
 
                     //Console.WriteLine("Sending: " + Encoding.ASCII.GetString(answer));
 
-                    client.SendFrame(answer);
+                    sender.SendFrame(answer);
 
                 }
 

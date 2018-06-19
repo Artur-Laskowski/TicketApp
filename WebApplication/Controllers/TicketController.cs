@@ -18,19 +18,21 @@ using Microsoft.AspNetCore.SignalR;
 namespace WebApplication.Controllers {
     public class TicketController : Controller {
 
-        //public TicketController(IConnectionManager signalRConnectionManager) {
-        //    var _hub = signalRConnectionManager.GetHubContext<T>();
-        //}
+
+        static private Object commsLock = new Object();
+        static PushSocket sender = new PushSocket("@tcp://*:5557");
+        static PullSocket responseReceiver = new PullSocket("@tcp://localhost:5558");
 
         static public byte[] Communicate(string request) {
-            using (var server = new RequestSocket()) {
-                server.Connect("tcp://localhost:5555");
+            //using (var server = new /*PublisherSocket()*/RequestSocket()) {
+            //server.Connect("tcp://localhost:5555");
 
+            lock (commsLock) {
                 Console.WriteLine($"Sending {request}");
-                server.SendFrame(request);
+                sender.SendFrame(request);
 
                 //server.ReceiveFrameString();
-                var message = server.ReceiveFrameBytes();
+                var message = responseReceiver.ReceiveFrameBytes();
 
                 if (message.Length == 0)
                     throw new Exception("empty response");
