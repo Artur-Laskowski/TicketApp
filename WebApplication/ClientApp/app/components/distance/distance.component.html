@@ -54,11 +54,9 @@
     </div>
 
     <br />
-    <div id="dist-button" *ngIf="loggedIn">
+    <div id="dist-button">
         <button (click)="getDistance()">calculate distance</button>
 
         <p>Distance: {{ distance }}</p>
     </div>
-
-    <em *ngIf="!loggedIn" id="warning">You must login first!</em>
 </div>

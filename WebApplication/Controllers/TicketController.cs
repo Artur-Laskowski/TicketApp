@@ -67,9 +67,6 @@ namespace WebApplication.Controllers {
             byte[] response;
             try {
                 response = Communicate(request);
-                if (HttpContext.Session.Get("currentUser").Length == 0) {
-                    throw new Exception("Not logged in");
-                }
             } catch (Exception) {
                 response = BitConverter.GetBytes(-1.0);
             }

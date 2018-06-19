@@ -11,7 +11,6 @@ export class DistanceComponent {
     public stations: string[];
     public selectedStartStation: string;
     public selectedEndStation: string;
-    public loggedIn: boolean;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
 
@@ -20,12 +19,6 @@ export class DistanceComponent {
             this.selectedStartStation = this.stations[0];
             this.selectedEndStation = this.stations[0];
         }, error => console.error(error));
-
-        this.http.get(`${this.baseUrl}isLoggedIn`, {}).subscribe(result => {
-            this.loggedIn = result.text() == "true";
-        }, error => console.error(error));
-
-
     }
     
     public distance = 0;
