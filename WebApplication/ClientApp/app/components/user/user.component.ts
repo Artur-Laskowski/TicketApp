@@ -109,6 +109,7 @@ export class UserComponent {
     logout() {
         this.http.post(this.baseUrl + 'logoutUser', {}).subscribe(result => {
             this.loggedIn = false;
+            this.receivedTickets = false;
         }, error => console.error(error));
     }
 }

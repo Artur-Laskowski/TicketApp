@@ -24,9 +24,6 @@ namespace WebApplication.Controllers {
         static PullSocket responseReceiver = new PullSocket("@tcp://localhost:5558");
 
         static public byte[] Communicate(string request) {
-            //using (var server = new /*PublisherSocket()*/RequestSocket()) {
-            //server.Connect("tcp://localhost:5555");
-
             lock (commsLock) {
                 Console.WriteLine($"Sending {request}");
                 sender.SendFrame(request);
@@ -156,7 +153,6 @@ namespace WebApplication.Controllers {
 
         [HttpPost("[action]")]
         public bool registerUser([FromBody]LogOnModel logOnModel) {
-            //HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
             if (logOnModel.username == null || logOnModel.password == null)
                 return false;
 
@@ -203,7 +199,6 @@ namespace WebApplication.Controllers {
 
         [HttpPost("[action]")]
         public bool buyTicket([FromBody]TicketPurchaseModel ticketPurchaseDetails) {
-            //HttpContext.Session.Set("currentUser", Encoding.ASCII.GetBytes(logOnModel.username));
             if (ticketPurchaseDetails.stationA == null || ticketPurchaseDetails.stationB == null)
                 return false;
 

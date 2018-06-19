@@ -10,40 +10,14 @@ using System.Threading;
 
 namespace requestProcessing {
     class Program {
-
-
-
-
-
-
         static void Main(string[] args) {
             Model.ticketClassesDataContext = new TicketClassesDataContext();
 
-            /*
-            var stationRows = ticketClassesDataContext.GetTable<Station>();
-
-            IQueryable<Station> l = from s in stationRows select s;
-            
-            foreach (var row in stationRows)
-            {
-                Console.WriteLine($"Id: {row.Id}, name: {row.Name}, lat: {row.Lat}, lng: {row.Lng}");
-                foreach (var row2 in stationRows) {
-                    Console.WriteLine($"Distance to {row2.Name}: {GetDistance(row, row2):N2}km");
-                }
-            }
-            */
-
-            //using (var client = new /*SubscriberSocket()*/ResponseSocket()) {
-            //client.Bind("tcp://*:5555");
             using (var receiver = new PullSocket(">tcp://localhost:5557"))
             using (var sender = new PushSocket(">tcp://localhost:5558")) {
 
                 while (true) {
                     Console.WriteLine("waiting");
-                    //string[] s = new string[2];
-                    //s[0] = "1";
-                    //s[1] = "user1";
-                    //var aanswer = Controller.GetTicketsByUser(s);
 
                     var message = receiver.ReceiveFrameString();
                     string[] vs = message.Split(';');
@@ -84,9 +58,6 @@ namespace requestProcessing {
                 }
 
             }
-
-            Console.WriteLine("Finished");
-            Console.ReadKey();
         }
     }
 }
