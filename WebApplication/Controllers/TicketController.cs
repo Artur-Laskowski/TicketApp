@@ -23,6 +23,8 @@ namespace WebApplication.Controllers {
         static PushSocket sender = new PushSocket("@tcp://*:5557");
         static PullSocket responseReceiver = new PullSocket("@tcp://localhost:5558");
 
+        //helper functions
+        #region helper functions
         static public byte[] Communicate(string request) {
             lock (commsLock) {
                 Console.WriteLine($"Sending {request}");
@@ -38,6 +40,42 @@ namespace WebApplication.Controllers {
             }
         }
 
+        public bool checkIfLoginAvailable(string login) {
+            string request = "CheckIfLoginAvailable;";
+            request += login;
+
+            byte[] response;
+            try {
+                response = Communicate(request);
+            } catch (Exception) {
+                response = BitConverter.GetBytes(-1);
+            }
+
+            return BitConverter.ToInt32(response, 0) == -1;
+        }
+
+        private string GetBase64FromString(string data) {
+            using (var sha1 = new SHA1CryptoServiceProvider()) {
+                var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(data));
+                return Convert.ToBase64String(sha1data);
+            }
+        }
+
+        private void addUser(string username, string password) {
+            string request = "AddUser;";
+            request += username + ";";
+            request += GetBase64FromString(password);
+
+            try {
+                Communicate(request);
+            } catch (Exception) {
+
+            }
+        }
+        #endregion
+
+        //data models
+        #region data models
         public class LogOnModel {
             [Required]
             [Display(Name = "User name")]
@@ -58,7 +96,11 @@ namespace WebApplication.Controllers {
             [Display(Name = "End station")]
             public string stationB { get; set; }
         }
+        #endregion
 
+
+        //api functions
+        #region api functions
         [HttpGet("[action]")]
         public int getDistance(string stationA, string stationB) {
             string request = "GetDistance;";
@@ -161,39 +203,6 @@ namespace WebApplication.Controllers {
             }
         }
 
-        public bool checkIfLoginAvailable(string login) {
-            string request = "CheckIfLoginAvailable;";
-            request += login;
-
-            byte[] response;
-            try {
-                response = Communicate(request);
-            } catch (Exception) {
-                response = BitConverter.GetBytes(-1);
-            }
-
-            return BitConverter.ToInt32(response, 0) == -1;
-        }
-
-        private string GetBase64FromString(string data) {
-            using (var sha1 = new SHA1CryptoServiceProvider()) {
-                var sha1data = sha1.ComputeHash(Encoding.ASCII.GetBytes(data));
-                return Convert.ToBase64String(sha1data);
-            }
-        }
-
-        private void addUser(string username, string password) {
-            string request = "AddUser;";
-            request += username + ";";
-            request += GetBase64FromString(password);
-
-            try {
-                Communicate(request);
-            } catch (Exception) {
-
-            }
-        }
-
         [HttpPost("[action]")]
         public bool buyTicket([FromBody]TicketPurchaseModel ticketPurchaseDetails) {
             if (ticketPurchaseDetails.stationA == null || ticketPurchaseDetails.stationB == null)
@@ -240,69 +249,6 @@ namespace WebApplication.Controllers {
 
             return tickets;
         }
-
-        // GET: Ticket
-        public ActionResult Index() {
-            return View();
-        }
-
-        // GET: Ticket/Details/5
-        public ActionResult Details(int id) {
-            return View();
-        }
-
-        // GET: Ticket/Create
-        public ActionResult Create() {
-            return View();
-        }
-
-        // POST: Ticket/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection) {
-            try {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
-        }
-
-        // GET: Ticket/Edit/5
-        public ActionResult Edit(int id) {
-            return View();
-        }
-
-        // POST: Ticket/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
-        }
-
-        // GET: Ticket/Delete/5
-        public ActionResult Delete(int id) {
-            return View();
-        }
-
-        // POST: Ticket/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
-        }
+        #endregion
     }
 }
