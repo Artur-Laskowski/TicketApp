@@ -25,8 +25,12 @@ namespace requestProcessing {
         }
 
         static public Station[] GetAllStations() {
-            var table = ticketClassesDataContext.GetTable<Station>();
-            return table.ToArray();
+            //var table = ticketClassesDataContext.GetTable<Station>();
+            //return table.ToArray();
+            var result = ticketClassesDataContext.ExecuteQuery<Station>(
+                @"SELECT * FROM dbo.Station"
+            );
+            return result.ToArray();
         }
 
         static public string GetStationName(int id) {

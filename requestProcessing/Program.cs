@@ -11,14 +11,20 @@ using System.Threading;
 namespace requestProcessing {
     class Program {
         static void Main(string[] args) {
-            Model.ticketClassesDataContext = new TicketClassesDataContext();
 
             using (var receiver = new PullSocket(">tcp://localhost:5557"))
-            using (var sender = new PushSocket(">tcp://localhost:5558")) {
+            using (var sender = new PushSocket(">tcp://localhost:5558"))
+            using (Model.ticketClassesDataContext = new TicketClassesDataContext("Server=(localdb)\\ProjectsV13;Database=TicketsDatabase;")) {
+
+                Model.ticketClassesDataContext.Connection.Open();
+                var result = Model.ticketClassesDataContext.ExecuteQuery<Station>(
+                    @"SELECT * FROM dbo.Station"
+                );
+                foreach (var r in result) ;
 
                 while (true) {
                     Console.WriteLine("waiting");
-
+                    
                     var message = receiver.ReceiveFrameString();
                     string[] vs = message.Split(';');
                     Console.WriteLine("Received {0}", message);
@@ -54,7 +60,6 @@ namespace requestProcessing {
                     //Console.WriteLine("Sending: " + Encoding.ASCII.GetString(answer));
 
                     sender.SendFrame(answer);
-
                 }
 
             }
